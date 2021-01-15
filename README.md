@@ -8,9 +8,9 @@ The main function of this script is to parse the filenames+extentions of the ger
 
 ## Installation
 
-Install [GerbV](http://gerbv.geda-project.org/). Binaries for Windows can be found [here](https://sourceforge.net/projects/gerbv-portable/files/).
-<p>Install [Python3](https://www.python.org/downloads/). I recommend also installing pip and adding Python+pip to your PATH.
-<p>Install these Python plugins (only needed for the png export):
+Install [GerbV](http://gerbv.geda-project.org/). Binaries for Windows can be found [here](https://sourceforge.net/projects/gerbv-portable/files/).<br>
+Install [Python3](https://www.python.org/downloads/). I recommend also installing pip and adding Python+pip to your PATH.<br>
+Install these Python plugins (only needed for the png export):
 - scikit-image
 - imutils
 - opencv-python
@@ -34,14 +34,15 @@ Hopefully one of these works and then use that one to install imutils and opencv
 - The DPI of the png export can be increased (or decreased) from the default 300 DPI, but if you go to high you may run out of memory for the calculation of the differences between the layers. The error will say "Unable to allocate XXX. MiB for an array...". I coundn\'t go higher than 450 DPI when I tried this.
 
 ### Use GrbDiff as a difftool in git or elsewhere
-Normally GrbDiff will open the same files as last time the application were used. The filepaths are saved in settings.ini. You can supply the filepaths as arguments instead. This is useful if you\'d like to invoke GrbDiff as a difftool directly from git. How this is done exactly is not described here.
-<p>Example:
-<br>`
+Normally GrbDiff will open the same files as last time the application were used. The filepaths are saved in settings.ini. You can supply the filepaths as arguments instead. This is useful if you\'d like to invoke GrbDiff as a difftool directly from git. How this is done exactly is not described here.<br>
+Example:<br>
+`
 python GrbDiff.py "C:\gerber1.zip" "C:\gerber2.zip"
 `
-<p>If the gerber files are located in the same directory (or temp directory), it may be a bad idea for the application to try to find other files in the same directory. In this case you can use the \"-s\" argument to tell GrbDiff to only compare the two files supplied.
-<p>Example:
-<br>`
+<br>
+If the gerber files are located in the same directory (or temp directory), it may be a bad idea for the application to try to find other files in the same directory. In this case you can use the \"-s\" argument to tell GrbDiff to only compare the two files supplied.<br>
+Example:<br>
+`
 python GrbDiff.py -s "C:\temp\SDU-404-B-L1.gtl" "C:\temp\SDU-404-C-L1.gtl"
 `
 ## License, credits and how you could help
