@@ -37,7 +37,7 @@ filetypes = [
                ['Bottom Solder Paste', ['*.gbp', '*-B?Paste.*', '*.crs', '*.bsp', '*.spb', '*.bottompaste.gbr', '*.bcream.ger'], ''],
                ['Plated Drill File', ['*-PTH.drl', '*.drl', '*.txt', '*.xln', '*.exc', '*.drd', '*.tap', '*.fab.gbr', '*.plated-drill.cnc'], '*NPTH*'],
                ['Non-Plated Drill File', ['*-NPTH.drl'], ''],
-               ['Eco1 Layer', ['*-Eco1?User.*'], ''],
+               ['Eco1 Layer', ['*-User?Eco1.*', '*-Eco1?User.*'], ''],
                ['Outline of PCB', ['*.gm1', '*-Edge?Cuts.*', '*.gko', '*.gm3', '*.dim', '*.gml', '*.fab', '*.out.gbr', '*.boardout.ger'], ''],
             ]
 
@@ -622,14 +622,18 @@ dpi_entry_variable.set(settings_other['png_export_dpi'])
 png_export_dir_label.configure(text=settings_paths['png_export_path'])
 
 if (gerber1_arg == ''):
-    if (settings_paths['grb_file1'] != ''):
-        open_gerber_file(settings_paths['grb_file1'], 1)
+    file1_path_settings = settings_paths['grb_file1']
+    if (file1_path_settings != ''):
+        if ( os.path.isfile(file1_path_settings) or os.path.isdir(file1_path_settings) ):
+            open_gerber_file(file1_path_settings, 1)
 else:
     open_gerber_file(gerber1_arg, 1)
 
 if (gerber2_arg == ''):
-    if (settings_paths['grb_file2'] != ''):
-        open_gerber_file(settings_paths['grb_file2'], 2)
+    file2_path_settings = settings_paths['grb_file2']
+    if (file2_path_settings != ''):
+        if ( os.path.isfile(file2_path_settings) or os.path.isdir(file2_path_settings) ):
+            open_gerber_file(file2_path_settings, 2)
 else:
     open_gerber_file(gerber2_arg, 2)
 
