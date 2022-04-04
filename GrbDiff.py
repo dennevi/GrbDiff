@@ -24,21 +24,21 @@ from zipfile import ZipFile
 # to png.
 filetypes = [
                ['Top Solder Paste', ['*.gtp', '*-F?Paste.*', '*.crc', '*.tsp', '*.stp', '*.toppaste.gbr', '*.tcream.ger'], ''],
-               ['Top Silk Screen', ['*.gto', '*-F?SilkS.*', '*.plc', '*.tsk', '*.sst', '*.topsilk.gbr', '*.topsilkscreen.ger'], ''],
-               ['Top Solder Mask', ['*.gts', '*-F?Mask.*', '*.stc', '*.tsm', '*.smt', '*.topmask.gbr', '*.topsoldermask.ger'], ''],
-               ['Copper Layer L1', ['*.gtl', '*-L1.*', '*.g1', '*-F?Cu*', '*.cmp', '*.top', '*.top.gbr', '*.toplayer.ger'], '*.pos'],
-               ['Copper Layer L2', ['*.g1', '*.g2', '*-L2.*', '*-In1?Cu*', '*-Inner1?Cu*', '*.ly1', '*.ly2', '*.in1', '*.internalplane1.ger', '*.gbl', '*-B?Cu*', '*.sol', '*.bot', '*.bottom.gbr', '*.bottomlayer.ger'], '*.pos'],
-               ['Copper Layer L3', ['*.g2', '*.g3', '*-L3.*', '*-In2?Cu*', '*-Inner2?Cu*', '*.ly2', '*.ly3', '*.in2', '*.internalplane2.ger', '*.gbl', '*-B?Cu*', '*.sol', '*.bot', '*.bottom.gbr', '*.bottomlayer.ger'], '*.pos'],
-               ['Copper Layer L4', ['*.g3', '*.g4', '*-L4.*', '*-In3?Cu*', '*-Inner3?Cu*', '*.ly3', '*.ly4', '*.in3', '*.internalplane3.ger', '*.gbl', '*-B?Cu*', '*.sol', '*.bot', '*.bottom.gbr', '*.bottomlayer.ger'], '*.pos'],
-               ['Copper Layer L5', ['*.g4', '*.g5', '*-L5.*', '*-In4?Cu*', '*-Inner4?Cu*', '*.ly4', '*.ly5', '*.in4', '*.internalplane4.ger', '*.gbl', '*-B?Cu*', '*.sol', '*.bot', '*.bottom.gbr', '*.bottomlayer.ger'], '*.pos'],
-               ['Copper Layer L6', ['*.g5', '*.g6', '*-L6.*', '*.gbl', '*-B?Cu*', '*.sol', '*.bot', '*.bottom.gbr', '*.bottomlayer.ger'], '*.pos'],
-               ['Bottom Solder Mask', ['*.gbs', '*-B?Mask.*', '*.sts', '*.bsm', '*.smb', '*.bottommask.gbr', '*.bottomsoldermask.ger'], ''],
+               ['Top Silk Screen', ['*.gto', '*-F?SilkS.*', '*.plc', '*.tsk', '*.sst', '*.topsilk.gbr', '*.topsilkscreen.ger', 'to'], ''],
+               ['Top Solder Mask', ['*.gts', '*-F?Mask.*', '*.stc', '*.tsm', '*.smt', '*.topmask.gbr', '*.topsoldermask.ger', 'ts'], ''],
+               ['Copper Layer L1', ['*.gtl', '*-L1.*', '*.g1', '*-F?Cu*', '*.cmp', '*.top', '*.top.gbr', '*.toplayer.ger', 'tl'], '*.pos'],
+               ['Copper Layer L2', ['*.g1', '*.g2', '*-L2.*', '*-In1?Cu*', '*-Inner1?Cu*', '*.ly1', '*.ly2', '*.in1', '*.internalplane1.ger', '*.gbl', '*-B?Cu*', '*.sol', '*.bot', '*.bottom.gbr', '*.bottomlayer.ger', 'l2', 'bl'], '*.pos'],
+               ['Copper Layer L3', ['*.g2', '*.g3', '*-L3.*', '*-In2?Cu*', '*-Inner2?Cu*', '*.ly2', '*.ly3', '*.in2', '*.internalplane2.ger', '*.gbl', '*-B?Cu*', '*.sol', '*.bot', '*.bottom.gbr', '*.bottomlayer.ger', 'l3', 'bl'], '*.pos'],
+               ['Copper Layer L4', ['*.g3', '*.g4', '*-L4.*', '*-In3?Cu*', '*-Inner3?Cu*', '*.ly3', '*.ly4', '*.in3', '*.internalplane3.ger', '*.gbl', '*-B?Cu*', '*.sol', '*.bot', '*.bottom.gbr', '*.bottomlayer.ger', 'l4', 'bl'], '*.pos'],
+               ['Copper Layer L5', ['*.g4', '*.g5', '*-L5.*', '*-In4?Cu*', '*-Inner4?Cu*', '*.ly4', '*.ly5', '*.in4', '*.internalplane4.ger', '*.gbl', '*-B?Cu*', '*.sol', '*.bot', '*.bottom.gbr', '*.bottomlayer.ger', 'l5', 'bl'], '*.pos'],
+               ['Copper Layer L6', ['*.g5', '*.g6', '*-L6.*', '*.gbl', '*-B?Cu*', '*.sol', '*.bot', '*.bottom.gbr', '*.bottomlayer.ger', 'bl'], '*.pos'],
+               ['Bottom Solder Mask', ['*.gbs', '*-B?Mask.*', '*.sts', '*.bsm', '*.smb', '*.bottommask.gbr', '*.bottomsoldermask.ger', 'bs'], ''],
                ['Bottom Silk Screen', ['*.gbo', '*-B?SilkS.*', '*.pls', '*.bsk', '*.ssb', '*.bottomsilk.gbr', '*.bottomsilkscreen.ger'], ''],
                ['Bottom Solder Paste', ['*.gbp', '*-B?Paste.*', '*.crs', '*.bsp', '*.spb', '*.bottompaste.gbr', '*.bcream.ger'], ''],
-               ['Plated Drill File', ['*-PTH.drl', '*.drl', '*.txt', '*.xln', '*.exc', '*.drd', '*.tap', '*.fab.gbr', '*.plated-drill.cnc'], '*NPTH*'],
+               ['Plated Drill File', ['*-PTH.drl', '*.drl', '*.txt', '*.xln', '*.exc', '*.drd', '*.tap', '*.fab.gbr', '*.plated-drill.cnc', 'drl'], '*NPTH*'],
                ['Non-Plated Drill File', ['*-NPTH.drl'], ''],
-               ['Eco1 Layer', ['*-User?Eco1.*', '*-Eco1?User.*'], ''],
-               ['Outline of PCB', ['*.gm1', '*-Edge?Cuts.*', '*.gko', '*.gm3', '*.dim', '*.gml', '*.fab', '*.out.gbr', '*.boardout.ger'], ''],
+               ['Eco1 Layer', ['*-User?Eco1.*', '*-Eco1?User.*', 'vcut'], ''],
+               ['Outline of PCB', ['*.gm1', '*-Edge?Cuts.*', '*.gko', '*.gm3', '*.dim', '*.gml', '*.fab', '*.out.gbr', '*.boardout.ger', 'ko'], ''],
             ]
 
 # Color templates for viewing all layers at the same time in GerbV
@@ -226,7 +226,7 @@ root.grid_columnconfigure(3, minsize=250)
 
 def select_gerber_file(sel):
     sel_file = askopenfilename(title="Select a Gerber File or Zip archive", filetypes=[('Gerber files', '*.*')])
-    if sel_file is not '':
+    if sel_file != '':
         if (sel == 1):
             settings_paths['grb_file1'] = sel_file
             write_settings_file()
