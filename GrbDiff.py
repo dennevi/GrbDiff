@@ -189,6 +189,9 @@ global gerber2_path
 gerber2_path = ''
 
 def diff_gerbers(x):
+    if(not gerbv_path["text"]):
+        messagebox.showwarning("No GerbV", f"You must first select a GerbV binary.")
+        
     print("Color template for diff of gerbers:", diff_gerbv_args[diff_color_combobox.current()][0])
     print(x, filetypes[x][0])
     if (firstgerbers[x].get() == "---"):
@@ -329,6 +332,9 @@ def open_gerber_file(sel_file, sel):
 def open_gerber_files(sel):
     print("PCB Color Template Name:", pcb_color_template[gerber_color_combobox.current()][0])
     print("PCB Background Color:", pcb_color_template[gerber_color_combobox.current()][1])
+
+    if(not gerbv_path["text"]):
+        messagebox.showwarning("No GerbV", f"You must first select a GerbV binary.")
 
     process_args = [gerbv_path["text"], "--background="+pcb_color_template[gerber_color_combobox.current()][1]]
 
