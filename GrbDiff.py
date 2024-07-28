@@ -160,21 +160,50 @@ root = Tk()
 
 # root window title and dimension
 root.title("GrbDiff - Visualize changes in Gerber files")
-root.geometry('1200x800')
+root.geometry('1200x820')
+
+# Create A Main frame
+main_frame = Frame(root)
+main_frame.pack(fill=BOTH,expand=1)
+
+# Create Frame for X Scrollbar
+sec = Frame(main_frame)
+sec.pack(fill=X,side=BOTTOM)
+
+# Create A Canvas
+my_canvas = Canvas(main_frame)
+my_canvas.pack(side=LEFT,fill=BOTH,expand=1)
+
+# Add A Scrollbars to Canvas
+x_scrollbar = Scrollbar(sec,orient=HORIZONTAL,command=my_canvas.xview)
+x_scrollbar.pack(side=BOTTOM,fill=X)
+y_scrollbar = Scrollbar(main_frame,orient=VERTICAL,command=my_canvas.yview)
+y_scrollbar.pack(side=RIGHT,fill=Y)
+
+# Configure the canvas
+my_canvas.configure(xscrollcommand=x_scrollbar.set)
+my_canvas.configure(yscrollcommand=y_scrollbar.set)
+my_canvas.bind("<Configure>",lambda e: my_canvas.config(scrollregion= my_canvas.bbox(ALL))) 
+
+# Create Another Frame INSIDE the Canvas
+second_frame = Frame(my_canvas)
+
+# Add that New Frame a Window In The Canvas
+my_canvas.create_window((0,0),window= second_frame, anchor="nw")
 
 row=1
 dpi_entry_variable = StringVar()  # Declaration
 
 # Add headlines
-root.grid_rowconfigure(row, minsize=15)
+second_frame.grid_rowconfigure(row, minsize=15)
 row = row + 1
-headline_layername = Label(root, text="Layer Name", font='bold')
+headline_layername = Label(second_frame, text="Layer Name", font='bold')
 headline_layername.grid(column=1, row=row, sticky=W, padx=10)
-headline_gerber1 = Label(root, text="Gerber 1", font='bold')
+headline_gerber1 = Label(second_frame, text="Gerber 1", font='bold')
 headline_gerber1.grid(column=2, row=row, sticky=W, padx=10)
-headline_gerber2 = Label(root, text="Gerber 2", font='bold')
+headline_gerber2 = Label(second_frame, text="Gerber 2", font='bold')
 headline_gerber2.grid(column=3, row=row, sticky=W, padx=10)
-headline_difflayer = Label(root, text="Diff Layer", font='bold')
+headline_difflayer = Label(second_frame, text="Diff Layer", font='bold')
 headline_difflayer.grid(column=4, row=row, sticky=W, padx=10)
 row = row + 1
 
@@ -212,20 +241,20 @@ def diff_gerbers(x):
 
 for index, value in enumerate(filetypes):
     print(index, "Layer:", value[0], "Exp0:", value[1][0])
-    layernames.append(Label(root, text=value[0]))
+    layernames.append(Label(second_frame, text=value[0]))
     layernames[index].grid(column=1, row=row, sticky=W, padx=10)
-    firstgerbers.append(Combobox(root, width=70, values=["---"]))
+    firstgerbers.append(Combobox(second_frame, width=70, values=["---"]))
     firstgerbers[index].grid(column=2, row=row, sticky=W, padx=10)
     firstgerbers[index].set("---")
-    secondgerbers.append(Combobox(root, width=70, values=["---"]))
+    secondgerbers.append(Combobox(second_frame, width=70, values=["---"]))
     secondgerbers[index].grid(column=3, row=row, sticky=W, padx=10)
     secondgerbers[index].set("---")
-    diffbutton.append(Button(root, text='Diff in GerbV',command=lambda index=index: diff_gerbers(index)))
+    diffbutton.append(Button(second_frame, text='Diff in GerbV',command=lambda index=index: diff_gerbers(index)))
     diffbutton[index].grid(column=4, row=row, sticky=W, padx=10)
     row = row+1
 
-root.grid_columnconfigure(2, minsize=250)
-root.grid_columnconfigure(3, minsize=250)
+second_frame.grid_columnconfigure(2, minsize=250)
+second_frame.grid_columnconfigure(3, minsize=250)
 
 def select_gerber_file(sel):
     sel_file = askopenfilename(title="Select a Gerber File or Zip archive", filetypes=[('Gerber files', '*.*')])
@@ -356,23 +385,23 @@ def open_gerber_files(sel):
 
 
 # Create buttons to open gerbers and labels showing the location
-open_gerber1 = Button(root, text='Open Gerber in GerbV', command=lambda: open_gerber_files(1))
+open_gerber1 = Button(second_frame, text='Open Gerber in GerbV', command=lambda: open_gerber_files(1))
 open_gerber1.grid(column=2, row=row, sticky=W, padx=10)
-open_gerber2 = Button(root, text='Open Gerber in GerbV', command=lambda: open_gerber_files(2))
+open_gerber2 = Button(second_frame, text='Open Gerber in GerbV', command=lambda: open_gerber_files(2))
 open_gerber2.grid(column=3, row=row, sticky=W, padx=10)
 row = row + 1
 
-root.grid_rowconfigure(row, minsize=20)
+second_frame.grid_rowconfigure(row, minsize=20)
 row = row + 1
 
-select_gerber1 = Button(root, text='Select Gerber 1', command=lambda: select_gerber_file(1))
+select_gerber1 = Button(second_frame, text='Select Gerber 1', command=lambda: select_gerber_file(1))
 select_gerber1.grid(column=1, row=row, sticky=W, padx=10)
-gerber1_dir = Label(root, text="")
+gerber1_dir = Label(second_frame, text="")
 gerber1_dir.grid(column=2, row=row, columnspan=3, sticky=W, padx=10)
 row = row + 1
-select_gerber2 = Button(root, text='Select Gerber 2', command=lambda: select_gerber_file(2))
+select_gerber2 = Button(second_frame, text='Select Gerber 2', command=lambda: select_gerber_file(2))
 select_gerber2.grid(column=1, row=row, sticky=W, padx=10)
-gerber2_dir = Label(root, text="")
+gerber2_dir = Label(second_frame, text="")
 gerber2_dir.grid(column=2, row=row, columnspan=3, sticky=W, padx=10)
 row = row + 1
 
@@ -386,9 +415,9 @@ def select_png_export_dir():
         write_settings_file()
 
 
-png_export_dir_btn = Button(root, text='Select export png dir', command=lambda: select_png_export_dir())
+png_export_dir_btn = Button(second_frame, text='Select export png dir', command=lambda: select_png_export_dir())
 png_export_dir_btn.grid(column=1, row=row, sticky=W, padx=10)
-png_export_dir_label = Label(root, text="")
+png_export_dir_label = Label(second_frame, text="")
 png_export_dir_label.grid(column=2, row=row, columnspan=3, sticky=W, padx=10)
 row = row + 1
 
@@ -534,19 +563,19 @@ def export_png():
     messagebox.showwarning("Info", export_result)
     export_png_status.configure(text="")
 
-root.grid_rowconfigure(row, minsize=15)
+second_frame.grid_rowconfigure(row, minsize=15)
 row = row + 1
 
-export_png_btn = Button(root, text='Export png', command=lambda: export_png())
+export_png_btn = Button(second_frame, text='Export png', command=lambda: export_png())
 export_png_btn.grid(column=1, row=row, sticky=W, padx=10)
-export_png_status = Label(root, text="")
+export_png_status = Label(second_frame, text="")
 export_png_status.grid(column=2, row=row, columnspan=3, sticky=W, padx=10)
 row = row + 1
 
 # Add headline
-root.grid_rowconfigure(row, minsize=15)
+second_frame.grid_rowconfigure(row, minsize=15)
 row = row + 1
-headline_templates = Label(root, text="Color templates", font='bold')
+headline_templates = Label(second_frame, text="Color templates", font='bold')
 headline_templates.grid(column=1, row=row, sticky=W, padx=10)
 row = row + 1
 
@@ -562,9 +591,9 @@ diff_color_template = []
 for template in diff_gerbv_args:
     diff_color_template.append(template[0])
 
-diff_color_label = Label(root, text="GerbV Diff")
+diff_color_label = Label(second_frame, text="GerbV Diff")
 diff_color_label.grid(column=1, row=row, sticky=W, padx=10)
-diff_color_combobox = Combobox(root, width=50, values=diff_color_template)
+diff_color_combobox = Combobox(second_frame, width=50, values=diff_color_template)
 diff_color_combobox.bind("<<ComboboxSelected>>",combo_changed)
 diff_color_combobox.grid(column=2, row=row, columnspan=3, sticky=W, padx=10)
 diff_color_combobox.current(settings_templates['diff_color_combobox'])
@@ -574,9 +603,9 @@ gerber_color_template = []
 for template in pcb_color_template:
     gerber_color_template.append(template[0])
 
-gerber_color_label = Label(root, text="GerbV View Gerber")
+gerber_color_label = Label(second_frame, text="GerbV View Gerber")
 gerber_color_label.grid(column=1, row=row, sticky=W, padx=10)
-gerber_color_combobox = Combobox(root, width=50, values=gerber_color_template)
+gerber_color_combobox = Combobox(second_frame, width=50, values=gerber_color_template)
 gerber_color_combobox.bind("<<ComboboxSelected>>",combo_changed)
 gerber_color_combobox.grid(column=2, row=row, columnspan=3, sticky=W, padx=10)
 gerber_color_combobox.current(settings_templates['gerber_color_combobox'])
@@ -586,9 +615,9 @@ png_template_names = []
 for template in png_color_template:
     png_template_names.append(template[0])
 
-png_color_label = Label(root, text="Png Export")
+png_color_label = Label(second_frame, text="Png Export")
 png_color_label.grid(column=1, row=row, sticky=W, padx=10)
-png_color_combobox = Combobox(root, width=50, values=png_template_names)
+png_color_combobox = Combobox(second_frame, width=50, values=png_template_names)
 png_color_combobox.bind("<<ComboboxSelected>>",combo_changed)
 png_color_combobox.grid(column=2, row=row, columnspan=3, sticky=W, padx=10)
 png_color_combobox.current(settings_templates['png_color_combobox'])
@@ -604,21 +633,21 @@ def select_gerbv():
         write_settings_file()
 
 # Add headline
-root.grid_rowconfigure(row, minsize=15)
+second_frame.grid_rowconfigure(row, minsize=15)
 row = row + 1
-headline_templates = Label(root, text="Settings", font='bold')
+headline_templates = Label(second_frame, text="Settings", font='bold')
 headline_templates.grid(column=1, row=row, sticky=W, padx=10)
 row = row + 1
 
-gerbv_path_btn = Button(root, text='Select Gerbv', command=lambda: select_gerbv())
+gerbv_path_btn = Button(second_frame, text='Select Gerbv', command=lambda: select_gerbv())
 gerbv_path_btn.grid(column=1, row=row, sticky=W, padx=10)
-gerbv_path = Label(root, text="")
+gerbv_path = Label(second_frame, text="")
 gerbv_path.grid(column=2, row=row, columnspan=3, sticky=W, padx=10)
 row = row + 1
 
-png_dpi_label = Label(root, text="Export png DPI")
+png_dpi_label = Label(second_frame, text="Export png DPI")
 png_dpi_label.grid(column=1, row=row, sticky=W, padx=10)
-png_dpi_entry = Entry(root, width=50, textvariable=dpi_entry_variable)
+png_dpi_entry = Entry(second_frame, width=50, textvariable=dpi_entry_variable)
 png_dpi_entry.grid(column=2, row=row, columnspan=3, sticky=W, padx=10)
 row = row + 1
 
