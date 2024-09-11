@@ -306,9 +306,12 @@ def open_gerber_file(sel_file, sel):
         os.mkdir(filedir)
 
         # Unpack zip archive
-        with ZipFile(sel_file, 'r') as zipObj:
-            # Extract all the contents of zip file in current directory
-            zipObj.extractall(filedir)
+        with ZipFile(sel_file) as zipObj:
+            for zip_info in zipObj.infolist():
+                if zip_info.is_dir():
+                    continue
+                zip_info.filename = os.path.basename(zip_info.filename)
+                zipObj.extract(zip_info, filedir)
     else:
         filedir = ntpath.dirname(sel_file)
         if (sel==1):
